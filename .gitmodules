@@ -1,0 +1,6 @@
+[submodule "dotfiles-private"]
+	path = dotfiles-private
+	url = git@github.com:crawlingcity/dotfiles-private.git
+[submodule "private"]
+	branch = master
+	update = merge
