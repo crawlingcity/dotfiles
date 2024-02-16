@@ -1,0 +1,32 @@
+#!/bin/zsh
+export HISTSIZE=100000
+export SAVEHIST=$HISTSIZE
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+# 1password ssh agent
+export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+# fzf stuff
+export FZF_DEFAULT_OPTS='--height=70% --preview="cat {}" --preview-window=right:60%:wrap'
+export FZF_DEFAULT_COMMAND='rg --hidden -l "" 2> /dev/null'
+export FZF_CTRL_T_COMMAND='$FZF_DEFAULT_COMMAND'
+# rbenv
+export PATH="/usr/local/opt/curl/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+export ANSIBLE_CONFIG="$SHELLZILLA_PATH/ansible/config/ansible.cfg"
+# puppeteer testing
+export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+export PUPPETEER_EXECUTABLE_PATH=`which chromium`
+# dot
+export dotfiles="/Users/crawling/.dotfiles"
+
+alias om='noglob overmind'
+alias ssh="TERM=xterm-256color kitten ssh --kitten=color_scheme='Cobalt2'"
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
+alias src="omz reload"
+alias lima_shell="limactl shell default"
+alias lima_restart="limactl stop -f default; limactl start default"
+alias lima_start="limactl start default"
+alias lima_reset="limactl stop -f default; limactl delete default && limactl start --name=default debian.yml"
+alias awk=gawk

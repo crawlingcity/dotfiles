@@ -1,0 +1,44 @@
+[user]
+	name = João Cunha
+	email = joao.cunha@cldware.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH7LBdKsPaQlDCjqYH4kZhCYrO9uADB2+oQU6XWA3bDg
+[color]
+  # Enable colors in color-supporting terminals
+  ui = auto
+[core]
+	excludesfile = /Users/crawling/.gitignore_global
+	editor = code --wait
+	mergeoptions = --no-edit
+[diff]
+	tool = idea
+	guitool = idea
+[merge]
+	tool = idea
+	guitool = idea
+[mergetool "idea"]
+	cmd = idea merge \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	trustExitCode = true
+[commit]
+	gpgsign = true
+	template = /Users/crawling/.stCommitMsg
+[gitflow "hotfix.finish"]
+	message = Hotfix %tag%
+[gitflow "release.finish"]
+  message = Release %tag%
+[protocol]
+	version = 2
+[init]
+	defaultBranch = master
+[pull]
+	rebase = false
+[fetch]
+	prune = true
+[status]
+	short = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
