@@ -1,0 +1,17 @@
+\set QUIET 1
+\pset pager
+\pset null <NULL>
+\encoding unicode
+\pset linestyle unicode
+\set COMP_KEYWORD_CASE upper
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTSIZE 20000
+SET time zone 'UTC';
+SET plpgsql.extra_errors TO 'all';
+SELECT $$
+ \set QUIET 1
+ \timing
+ \i ~/.psqlrc;
+$$ reload \gset
+\timing
+\set QUIET 0

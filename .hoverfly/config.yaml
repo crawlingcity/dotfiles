@@ -1,0 +1,11 @@
+default: local
+targets:
+  local:
+    name: local
+    host: localhost
+    admin.port: 8888
+    proxy.port: 8500
+    authenabled: false
+    username: ""
+    password: ""
+    loglevel: info
