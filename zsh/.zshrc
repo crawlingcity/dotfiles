@@ -18,6 +18,7 @@ plugins=(
 [ -s ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -s ~/.exports_and_aliases ] && source ~/.exports_and_aliases
 [ -s ~/.functions ] && source ~/.functions
+[ -s ~/.exports ] && source ~/.exports
 [ -s $HOME/.oh-my-zsh/oh-my-zsh.sh ] && source $HOME/.oh-my-zsh/oh-my-zsh.sh
 [ -s $SHELLZILLA_PATH/helper.sh ] && source $SHELLZILLA_PATH/helper.sh
 [ -s $USER_SHELLFILE ] && source $USER_SHELLFILE
