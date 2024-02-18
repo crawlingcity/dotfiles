@@ -45,3 +45,4 @@ bindkey '\e[F' end-of-line           # end
 bindkey '^[[1;9D' beginning-of-line  # super-left
 bindkey '^[[1;9C' end-of-line        # super-left
 eval "$(atuin init zsh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"

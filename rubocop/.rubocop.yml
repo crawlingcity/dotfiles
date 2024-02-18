@@ -1,1 +1,1 @@
-inherit_from: /Users/$(whoami)/work/shellzilla/standards/.rubocop.yml
+inherit_from: /Users/crawling/work/shellzilla/standards/.rubocop.yml
