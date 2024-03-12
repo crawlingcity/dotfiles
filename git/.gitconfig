@@ -7,7 +7,6 @@
   ui = auto
 [core]
 	excludesfile = /Users/crawling/.gitignore_global
-	editor = code --wait
 	mergeoptions = --no-edit
 [diff]
 	tool = idea
@@ -42,3 +41,6 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
