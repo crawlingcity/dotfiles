@@ -16,19 +16,19 @@ plugins=(
 # the source zone
 [ -s ~/.p10k.zsh ] && source ~/.p10k.zsh
 [ -s ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -s ~/.exports_and_aliases ] && source ~/.exports_and_aliases
-[ -s ~/.functions ] && source ~/.functions
-[ -s ~/.exports ] && source ~/.exports
 [ -s $HOME/.oh-my-zsh/oh-my-zsh.sh ] && source $HOME/.oh-my-zsh/oh-my-zsh.sh
 [ -s $SHELLZILLA_PATH/helper.sh ] && source $SHELLZILLA_PATH/helper.sh
-[ -s $USER_SHELLFILE ] && source $USER_SHELLFILE
 [ -s ~/homelab/scripts/homelab.sh ] && source ~/homelab/scripts/homelab.sh
 [ -s ~/work/deployer/deployer.sh ] && source ~/work/deployer/deployer.sh
 [ -s "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh"
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 [ -s "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
 load_remote >/dev/null 2>&1
+# this has to be after load_remote for noglob to work as inteded
+[ -s ~/.exports_and_aliases ] && source ~/.exports_and_aliases
+[ -s ~/.functions ] && source ~/.functions
+[ -s ~/.exports ] && source ~/.exports
+[ -s $USER_SHELLFILE ] && source $USER_SHELLFILE # depends on .exports
 
 ulimit -n 10240
 # load completions
