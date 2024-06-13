@@ -13,11 +13,12 @@ plugins=(
   zsh-overmind-autocomplete
 )
 
+export SHELLZILLA_PATH="$HOME/work/shellzilla"
 # the source zone
 [ -s ~/.p10k.zsh ] && source ~/.p10k.zsh
 [ -s ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -s $HOME/.oh-my-zsh/oh-my-zsh.sh ] && source $HOME/.oh-my-zsh/oh-my-zsh.sh
-[ -s $SHELLZILLA_PATH/helper.sh ] && source $SHELLZILLA_PATH/helper.sh
+[ -s ~/work/shellzilla/helper.sh ] && source ~/work/shellzilla/helper.sh
 [ -s ~/homelab/scripts/homelab.sh ] && source ~/homelab/scripts/homelab.sh
 [ -s ~/work/deployer/deployer.sh ] && source ~/work/deployer/deployer.sh
 [ -s "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh"
