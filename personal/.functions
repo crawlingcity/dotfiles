@@ -38,3 +38,8 @@ ollama() {
     fi
   fi
 }
+
+# homelab
+sshKeysHelper() {
+  python ~/homelab/helpers/sshkeys.py $1
+}
