@@ -29,6 +29,9 @@ export LC_MONETARY="pt_PT.UTF-8"
 export LC_NUMERIC="pt_PT.UTF-8"
 export LC_TIME="pt_PT.UTF-8"
 
+# kubectl
+export KUBECONFIG=~/.kube/config
+
 # noglobs
 alias om='noglob overmind'
 alias reload_jobs='noglob reload_jobs'
