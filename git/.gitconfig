@@ -38,9 +38,3 @@
 	format = ssh
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
