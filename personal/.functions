@@ -21,23 +21,23 @@ sdk() {
 
 # ollama
 # start ollama brew service if its not running, stop if it is running, if theres params, use normal ollama command
-ollama() {
-  if [ ! -z "$1" ]; then
-    if [ -z "$(brew services list | grep ollama | grep -v 'none')" ]; then
-      echo -e "Starting ollama service"
-      brew services start ollama
-    fi
-    /opt/homebrew/bin/ollama $@
-  else
-    if [ -z "$(brew services list | grep ollama | grep -v 'none')" ]; then
-      echo -e "Starting ollama service"
-      brew services start ollama
-    else
-      echo -e "Stopping ollama service"
-      brew services stop ollama
-    fi
-  fi
-}
+# ollama() {
+#   if [ ! -z "$1" ]; then
+#     if [ -z "$(brew services list | grep ollama | grep -v 'none')" ]; then
+#       echo -e "Starting ollama service"
+#       brew services start ollama
+#     fi
+#     /opt/homebrew/bin/ollama $@
+#   else
+#     if [ -z "$(brew services list | grep ollama | grep -v 'none')" ]; then
+#       echo -e "Starting ollama service"
+#       brew services start ollama
+#     else
+#       echo -e "Stopping ollama service"
+#       brew services stop ollama
+#     fi
+#   fi
+# }
 
 # homelab
 sshKeysHelper() {
