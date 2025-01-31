@@ -71,7 +71,7 @@ config.keys = {
 -- tabs
 -- config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.window_decorations = "RESIZE"
-config.hide_tab_bar_if_only_one_tab = true
+config.hide_tab_bar_if_only_one_tab = false
 config.audible_bell = "Disabled"
 config.window_frame = {
   font = wezterm.font { family = 'Roboto', weight = 'Bold' },

@@ -14,12 +14,13 @@ export PATH="/usr/local/opt/curl/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+export PATH="/Applications/casper.app/Contents/MacOS/jrxml2vrxml/bin:$PATH:"
 export ANSIBLE_CONFIG="$SHELLZILLA_PATH/ansible/config/ansible.cfg"
 # puppeteer testing
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 export PUPPETEER_EXECUTABLE_PATH=`which chromium`
 # rdbg
-export SHELL_HIDE_NAME=true
+export SHELL_HIDE_NAME=truer
 # lang
 export LANG="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
