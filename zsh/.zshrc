@@ -22,8 +22,6 @@ export SHELLZILLA_PATH="$HOME/work/shellzilla"
 [ -s ~/homelab/scripts/homelab.sh ] && source ~/homelab/scripts/homelab.sh
 [ -s ~/work/deployer/deployer.sh ] && source ~/work/deployer/deployer.sh
 [ -s "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh"
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-[ -s "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 load_remote >/dev/null 2>&1
 # this has to be after load_remote for noglob to work as inteded
 [ -s ~/.exports_and_aliases ] && source ~/.exports_and_aliases
