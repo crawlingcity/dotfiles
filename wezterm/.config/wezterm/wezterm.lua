@@ -17,12 +17,18 @@ config.keys = {
   {
     key = 'd',
     mods = 'CMD',
-    action = act.SplitHorizontal,
+    action = act.SplitHorizontal {
+      domain = "CurrentPaneDomain",
+      args = { os.getenv("SHELL") },
+    }
   },
   {
     key = 'd',
     mods = 'CMD|SHIFT',
-    action = act.SplitVertical,
+    action = act.SplitVertical {
+      domain = "CurrentPaneDomain",
+      args = { os.getenv("SHELL") },
+    },
   },
   {
     key = 'k',
@@ -60,6 +66,39 @@ config.keys = {
     key = 'RightArrow',
     mods = 'CMD|ALT',
     action = act{ ActivatePaneDirection="Right" }
+  },
+  -- moving around tmux edition
+  {
+    key = 'UpArrow',
+    mods = 'CMD|CTRL',
+    action = act.Multiple {
+      act.SendKey { key = "a", mods = "CTRL" },
+      act.SendKey { key = "UpArrow" },
+    },
+  },
+  {
+    key = 'DownArrow',
+    mods = 'CMD|CTRL',
+    action = act.Multiple {
+      act.SendKey { key = "a", mods = "CTRL" },
+      act.SendKey { key = "DownArrow" },
+    },
+  },
+  {
+    key = 'LeftArrow',
+    mods = 'CMD|CTRL',
+    action = act.Multiple {
+      act.SendKey { key = "a", mods = "CTRL" },
+      act.SendKey { key = "LeftArrow" },
+    },
+  },
+  {
+    key = 'RightArrow',
+    mods = 'CMD|CTRL',
+    action = act.Multiple {
+      act.SendKey { key = "a", mods = "CTRL" },
+      act.SendKey { key = "RightArrow" },
+    },
   },
   {
     key = 'Enter',
@@ -109,6 +148,11 @@ config.colors = {
     '#ae8fab',
     '#98baba',
     '#eceef3',
+  },
+  indexed = {
+    [93] = '#aabbff',   -- Common purple in 256-color palette
+    [129] = '#aabbff',  -- Another purple shade
+    [135] = '#aabbff',  -- Yet another purple
   },
 }
 

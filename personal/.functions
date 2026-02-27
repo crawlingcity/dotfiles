@@ -1,8 +1,15 @@
 #!/bin/zsh
-fd() {
+
+# lazy-load rbenv on first use
+rbenv() {
+  unset -f rbenv
+  eval "$(command rbenv init - zsh)"
+  rbenv "$@"
+}
+
+cdf() {
  local dir
- dir=$(find ${1:-.} -path '*/\.*' -prune -o -type d \
-      -print 2> /dev/null | fzf +m) &&
+ dir=$(fd --type d --hidden --exclude .git ${1:-.} 2>/dev/null | fzf +m) &&
  cd "$dir"
 }
 
@@ -18,26 +25,6 @@ sdk() {
   [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
   sdk $@
 }
-
-# ollama
-# start ollama brew service if its not running, stop if it is running, if theres params, use normal ollama command
-# ollama() {
-#   if [ ! -z "$1" ]; then
-#     if [ -z "$(brew services list | grep ollama | grep -v 'none')" ]; then
-#       echo -e "Starting ollama service"
-#       brew services start ollama
-#     fi
-#     /opt/homebrew/bin/ollama $@
-#   else
-#     if [ -z "$(brew services list | grep ollama | grep -v 'none')" ]; then
-#       echo -e "Starting ollama service"
-#       brew services start ollama
-#     else
-#       echo -e "Stopping ollama service"
-#       brew services stop ollama
-#     fi
-#   fi
-# }
 
 # homelab
 sshKeysHelper() {

@@ -10,7 +10,7 @@
 
 ## where to store your auth session token, default is your system data directory
 ## linux/mac: ~/.local/share/atuin/session
-## windows: %USERPROFILE%/.local/share/atuin/session
+## windows: %USERPROFILE%/.local/share/atuin/session:wq
 # session_path = "~/.session"
 
 ## date format used, either "us" or "uk"
@@ -29,7 +29,7 @@
 # update_check = true
 
 ## address of the sync server
-# sync_address = "https://api.atuin.sh"
+sync_address = "http://10.0.2.200:8888"
 
 ## how often to sync history. note that this is only triggered when a command
 ## is ran, so sync intervals may well be longer
