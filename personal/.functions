@@ -15,8 +15,13 @@ cdf() {
 
 nvm() {
   unset -f nvm
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \\. "/opt/homebrew/opt/nvm/nvm.sh"
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \\. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    [ -s "$HOME/.nvm/nvm.sh" ] && \. "$HOME/.nvm/nvm.sh"
+    [ -s "$HOME/.nvm/bash_completion" ] && \. "$HOME/.nvm/bash_completion"
+  fi
   nvm $@
 }
 

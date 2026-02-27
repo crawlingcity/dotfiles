@@ -3,18 +3,30 @@ export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-# 1password ssh agent
-export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+
+# SSH agent for 1Password
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # 1Password on Linux
+  [ -S "$HOME/.1password/agent.sock" ] && export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
+fi
+
 # fzf stuff
 export FZF_DEFAULT_OPTS='--height=70% --preview="bat --color=always --style=numbers {}" --preview-window=right:60%:wrap'
 export FZF_DEFAULT_COMMAND='rg --hidden -l "" 2> /dev/null'
 export FZF_CTRL_T_COMMAND='$FZF_DEFAULT_COMMAND'
+
 # rbenv
-export PATH="/usr/local/opt/curl/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-export PATH="/Applications/casper.app/Contents/MacOS/jrxml2vrxml/bin:$PATH"
+
+# macOS-only PATH additions
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export PATH="/usr/local/opt/curl/bin:$PATH"
+  export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+fi
+
 export ANSIBLE_CONFIG="$SHELLZILLA_PATH/ansible/config/ansible.cfg"
 # puppeteer testing
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -34,13 +46,8 @@ export LC_TIME="pt_PT.UTF-8"
 alias om='noglob overmind'
 alias reload_jobs='noglob reload_jobs'
 
-alias dotfiles="cd /Users/crawling/dotfiles"
-alias ibrew='arch -x86_64 /usr/local/bin/brew'
+alias dotfiles="cd $HOME/dotfiles"
 alias src="omz reload"
-alias lima_shell="limactl shell default"
-alias lima_restart="limactl stop -f default; limactl start default"
-alias lima_start="limactl start default"
-alias lima_reset="limactl stop -f default; limactl delete default && limactl start --name=default debian.yml"
 alias awk=gawk
 alias python=python3
 alias vi=nvim
@@ -49,4 +56,12 @@ alias cat=bat
 alias ls='eza --icons'
 alias ll='eza -la --icons --git'
 alias lt='eza --tree --icons -L 2'
-# alias bundle=/Users/crawling/.rbenv/shims/bundle
+
+# macOS-only aliases
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  alias ibrew='arch -x86_64 /usr/local/bin/brew'
+  alias lima_shell="limactl shell default"
+  alias lima_restart="limactl stop -f default; limactl start default"
+  alias lima_start="limactl start default"
+  alias lima_reset="limactl stop -f default; limactl delete default && limactl start --name=default debian.yml"
+fi
