@@ -24,6 +24,8 @@ local function shell_args()
   end
 end
 
+config.default_prog = shell_args()
+
 config.color_scheme = 'nord'
 config.font = wezterm.font('JetBrains Mono', { weight = 'Bold', italic = false })
 config.font_size = is_windows and 12.0 or 14.0
