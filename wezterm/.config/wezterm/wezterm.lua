@@ -1,100 +1,99 @@
 -- wezterm.lua
-local wezterm = require 'wezterm';
+local wezterm = require 'wezterm'
 local act = wezterm.action
 local config = {}
 
+-- OS detection
+local is_windows = wezterm.target_triple:find("windows") ~= nil
+
+-- On Mac:     SUPER = 'CMD',  pane_nav = 'CMD|ALT',  tmux_nav = 'CMD|CTRL',  link_mod = 'CMD'
+-- On Windows: SUPER = 'ALT', pane_nav = 'ALT|SHIFT', tmux_nav = 'ALT|CTRL', link_mod = 'CTRL'
+local SUPER    = is_windows and 'ALT'       or 'CMD'
+local PANE_NAV = is_windows and 'ALT|SHIFT' or 'CMD|ALT'
+local TMUX_NAV = is_windows and 'ALT|CTRL'  or 'CMD|CTRL'
+local LINK_MOD = is_windows and 'CTRL'      or 'CMD'
+
+local function shell_args()
+  if is_windows then
+    return { 'pwsh.exe', '-NoLogo' }
+    -- alternatives:
+    -- Git Bash: { 'C:/Program Files/Git/bin/bash.exe', '-l' }
+    -- WSL:      { 'wsl.exe', '--cd', '~' }
+  else
+    return { os.getenv("SHELL") }
+  end
+end
+
 config.color_scheme = 'nord'
 config.font = wezterm.font('JetBrains Mono', { weight = 'Bold', italic = false })
-config.font_size = 14.0
+config.font_size = is_windows and 12.0 or 14.0
 
 -- keybinds
 config.keys = {
   {
     key = 'r',
-    mods = 'CMD|SHIFT',
+    mods = SUPER .. '|SHIFT',
     action = act.ReloadConfiguration,
   },
   {
     key = 'd',
-    mods = 'CMD',
+    mods = SUPER,
     action = act.SplitHorizontal {
       domain = "CurrentPaneDomain",
-      args = { os.getenv("SHELL") },
-    }
+    },
   },
   {
     key = 'd',
-    mods = 'CMD|SHIFT',
+    mods = SUPER .. '|SHIFT',
     action = act.SplitVertical {
       domain = "CurrentPaneDomain",
-      args = { os.getenv("SHELL") },
     },
   },
   {
     key = 'k',
-    mods = 'CMD',
+    mods = SUPER,
     action = act.ClearScrollback 'ScrollbackAndViewport',
   },
   -- home / end
   {
     key = 'LeftArrow',
-    mods = 'CMD',
+    mods = SUPER,
     action = act.SendKey { key = 'Home' },
   },
   {
     key = 'RightArrow',
-    mods = 'CMD',
+    mods = SUPER,
     action = act.SendKey { key = 'End' },
   },
-  -- moving around
+  -- moving around wezterm panes
+  { key = 'UpArrow',    mods = PANE_NAV, action = act{ ActivatePaneDirection = "Up"    } },
+  { key = 'DownArrow',  mods = PANE_NAV, action = act{ ActivatePaneDirection = "Down"  } },
+  { key = 'LeftArrow',  mods = PANE_NAV, action = act{ ActivatePaneDirection = "Left"  } },
+  { key = 'RightArrow', mods = PANE_NAV, action = act{ ActivatePaneDirection = "Right" } },
+  -- moving around tmux panes
   {
-    key = 'UpArrow',
-    mods = 'CMD|ALT',
-    action = act{ ActivatePaneDirection="Up" }
-  },
-  {
-    key = 'DownArrow',
-    mods = 'CMD|ALT',
-    action = act{ ActivatePaneDirection="Down" }
-  },
-  {
-    key = 'LeftArrow',
-    mods = 'CMD|ALT',
-    action = act{ ActivatePaneDirection="Left" }
-  },
-  {
-    key = 'RightArrow',
-    mods = 'CMD|ALT',
-    action = act{ ActivatePaneDirection="Right" }
-  },
-  -- moving around tmux edition
-  {
-    key = 'UpArrow',
-    mods = 'CMD|CTRL',
+    key = 'UpArrow', mods = TMUX_NAV,
     action = act.Multiple {
       act.SendKey { key = "a", mods = "CTRL" },
       act.SendKey { key = "UpArrow" },
     },
   },
   {
-    key = 'DownArrow',
-    mods = 'CMD|CTRL',
+    key = 'DownArrow', mods = TMUX_NAV,
     action = act.Multiple {
       act.SendKey { key = "a", mods = "CTRL" },
       act.SendKey { key = "DownArrow" },
     },
   },
   {
-    key = 'LeftArrow',
-    mods = 'CMD|CTRL',
+    key = 'LeftArrow', mods = TMUX_NAV,
     action = act.Multiple {
       act.SendKey { key = "a", mods = "CTRL" },
       act.SendKey { key = "LeftArrow" },
     },
   },
   {
-    key = 'RightArrow',
-    mods = 'CMD|CTRL',
+    key = 'RightArrow', mods = TMUX_NAV,
     action = act.Multiple {
       act.SendKey { key = "a", mods = "CTRL" },
       act.SendKey { key = "RightArrow" },
@@ -102,14 +101,31 @@ config.keys = {
   },
   {
     key = 'Enter',
-    mods = 'CMD|SHIFT',
+    mods = SUPER .. '|SHIFT',
     action = wezterm.action.TogglePaneZoomState,
   },
 }
 
+-- Windows-only keybinds
+if is_windows then
+  table.insert(config.keys, {
+    key = 'c', mods = 'CTRL',
+    action = wezterm.action_callback(function(window, pane)
+      local has_selection = window:get_selection_text_for_pane(pane) ~= ''
+      if has_selection then
+        window:perform_action(act.CopyTo 'ClipboardAndPrimarySelection', pane)
+      else
+        window:perform_action(act.SendKey { key = 'c', mods = 'CTRL' }, pane)
+      end
+    end),
+  })
+  table.insert(config.keys, { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' })
+  table.insert(config.keys, { key = 'w', mods = 'CTRL', action = act.CloseCurrentPane { confirm = false } })
+  table.insert(config.keys, { key = 'd', mods = 'CTRL', action = act.CloseCurrentPane { confirm = false } })
+end
+
 -- tabs
--- config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
-config.window_decorations = "RESIZE"
+config.window_decorations = is_windows and "TITLE|RESIZE" or "RESIZE"
 config.hide_tab_bar_if_only_one_tab = false
 config.audible_bell = "Disabled"
 config.window_frame = {
@@ -117,12 +133,6 @@ config.window_frame = {
   font_size = 12.0,
   active_titlebar_bg = '#20232c',
   inactive_titlebar_bg = '#20232c',
-}
-
-config.colors = {
-  tab_bar = {
-    inactive_tab_edge = '#20232c',
-  },
 }
 
 -- colors
@@ -150,9 +160,12 @@ config.colors = {
     '#eceef3',
   },
   indexed = {
-    [93] = '#aabbff',   -- Common purple in 256-color palette
-    [129] = '#aabbff',  -- Another purple shade
-    [135] = '#aabbff',  -- Yet another purple
+    [93]  = '#aabbff',
+    [129] = '#aabbff',
+    [135] = '#aabbff',
+  },
+  tab_bar = {
+    inactive_tab_edge = '#20232c',
   },
 }
 
@@ -163,26 +176,25 @@ config.inactive_pane_hsb = {
 
 -- mouse
 config.mouse_bindings = {
-  -- Change the default click behavior so that it only selects
-  -- text and doesn't open hyperlinks
+  -- single click only selects text
   {
     event = { Up = { streak = 1, button = 'Left' } },
     mods = 'NONE',
     action = act.CompleteSelection 'ClipboardAndPrimarySelection',
   },
-
-  -- and make CTRL-Click open hyperlinks
+  -- CMD+click (Mac) / CTRL+click (Windows) opens hyperlinks
   {
     event = { Up = { streak = 1, button = 'Left' } },
-    mods = 'CMD',
+    mods = LINK_MOD,
     action = act.OpenLinkAtMouseCursor,
   },
-  -- NOTE that binding only the 'Up' event can give unexpected behaviors.
-  -- Read more below on the gotcha of binding an 'Up' event only.
 }
 
 -- bar
 local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
 bar.apply_to_config(config)
+
+-- ensure bar plugin doesn't hide the tab bar
+config.hide_tab_bar_if_only_one_tab = false
 
 return config
