@@ -1,12 +1,12 @@
 [user]
-	name = João Cunha
+	name = João Cunha
 	email = joao.cunha@cldware.com
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH7LBdKsPaQlDCjqYH4kZhCYrO9uADB2+oQU6XWA3bDg
 [color]
   # Enable colors in color-supporting terminals
   ui = auto
 [core]
-	excludesfile = /Users/crawling/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	mergeoptions = --no-edit
 [diff]
 	tool = idea
@@ -19,7 +19,7 @@
 	trustExitCode = true
 [commit]
 	gpgsign = true
-	template = /Users/crawling/.stCommitMsg
+	template = ~/.stCommitMsg
 [gitflow "hotfix.finish"]
 	message = Hotfix %tag%
 [gitflow "release.finish"]
@@ -39,4 +39,6 @@
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [maintenance]
-	repo = /Users/crawling/work/cloudware-business
+	repo = ~/work/cloudware-business
+[include]
+	path = ~/.gitconfig_local
