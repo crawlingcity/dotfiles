@@ -47,12 +47,9 @@ ulimit -n 10240
 # load completions
 autoload -U +X bashcompinit && bashcompinit
 
-# 1Password CLI completion (macOS / if op is installed)
-if command -v op &>/dev/null; then
-  _op_completion_cache="${XDG_CACHE_HOME:-$HOME/.cache}/op_completion.zsh"
-  if [[ ! -f "$_op_completion_cache" ]]; then
-    op completion zsh >| "$_op_completion_cache" && echo "compdef _op op" >> "$_op_completion_cache"
-  fi
+# 1Password CLI completion (cached, no auth needed on shell startup)
+_op_completion_cache="${XDG_CACHE_HOME:-$HOME/.cache}/op_completion.zsh"
+if [[ -f "$_op_completion_cache" ]]; then
   source "$_op_completion_cache"
 fi
 
@@ -105,3 +102,4 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
+

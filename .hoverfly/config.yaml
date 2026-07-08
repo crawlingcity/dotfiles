@@ -5,6 +5,7 @@ targets:
     host: localhost
     admin.port: 8888
     proxy.port: 8500
+    webserver: true
     authenabled: false
     username: ""
     password: ""

@@ -72,6 +72,10 @@ config.keys = {
   { key = 'DownArrow',  mods = PANE_NAV, action = act{ ActivatePaneDirection = "Down"  } },
   { key = 'LeftArrow',  mods = PANE_NAV, action = act{ ActivatePaneDirection = "Left"  } },
   { key = 'RightArrow', mods = PANE_NAV, action = act{ ActivatePaneDirection = "Right" } },
+  -- visual pane picker: press shortcut, then type the label shown on a pane
+  { key = 'p', mods = SUPER .. '|SHIFT', action = act.PaneSelect },
+  -- visual pane picker for swapping the active pane with another pane
+  { key = 's', mods = SUPER .. '|SHIFT', action = act.PaneSelect { mode = 'SwapWithActive' } },
   -- moving around tmux panes
   {
     key = 'UpArrow', mods = TMUX_NAV,
@@ -191,6 +195,14 @@ config.mouse_bindings = {
     action = act.OpenLinkAtMouseCursor,
   },
 }
+
+-- send one command to every pane in the active tab
+local cmd_sender = wezterm.plugin.require("https://github.com/aureolebigben/wezterm-cmd-sender")
+cmd_sender.apply_to_config(config, {
+  key = 'i',
+  mods = SUPER .. '|SHIFT',
+  description = 'Enter command to send to all panes in the active tab',
+})
 
 -- bar
 local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")

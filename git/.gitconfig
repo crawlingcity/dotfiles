@@ -1,7 +1,7 @@
 [user]
 	name = João Cunha
-	email = joao.cunha@cldware.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH7LBdKsPaQlDCjqYH4kZhCYrO9uADB2+oQU6XWA3bDg
+	email = joao.cunha@shine.co
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIONgHujT0ls3Ll8bOYTIGjX5Y/bHVWJtGKRytYjxsjpx
 [color]
   # Enable colors in color-supporting terminals
   ui = auto
@@ -38,7 +38,12 @@
 	format = ssh
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	allowedSignersFile = /Users/crawling/.config/git/allowed_signers
 [maintenance]
 	repo = ~/work/cloudware-business
 [include]
 	path = ~/.gitconfig_local
+[url "git@github-ageras:ageras-com/"]
+    insteadOf = git@github.com:ageras-com/
+[url "git@github-shine-cloudware:shine-cloudware/"]
+    insteadOf = git@github.com:shine-cloudware/
