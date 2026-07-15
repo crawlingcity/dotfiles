@@ -1,3 +1,8 @@
+# Ghostty integration must be loaded by shells created inside tmux as well.
+if [[ -n "$GHOSTTY_RESOURCES_DIR" && -r "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration" ]]; then
+  source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
+fi
+
 # zmodload zsh/zprof
 [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
@@ -103,3 +108,5 @@ fi
 
 export PATH="$HOME/.local/bin:$PATH"
 
+# Initialise rbenv after all PATH changes so Ruby shims are available immediately.
+eval "$(command rbenv init - zsh)"

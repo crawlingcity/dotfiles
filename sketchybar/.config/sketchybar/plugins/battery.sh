@@ -1,28 +1,33 @@
 #!/bin/sh
 
-PERCENTAGE="$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)"
-CHARGING="$(pmset -g batt | grep 'AC Power')"
+batt_info=$(pmset -g batt)
 
-if [ "$PERCENTAGE" = "" ]; then
+if [ "$SENDER" = "mouse.clicked" ]; then
+  remaining=$(printf '%s\n' "$batt_info" | sed -n 's/.* \([0-9][0-9]*:[0-9][0-9]*\) remaining.*/\1/p')
+  [ -n "$remaining" ] && remaining="${remaining}h" || remaining="No estimate"
+  sketchybar --set battery_time label="$remaining"
+  sketchybar --set "$NAME" popup.drawing=toggle
   exit 0
 fi
 
-case "${PERCENTAGE}" in
-  9[0-9]|100) ICON=""
-  ;;
-  [6-8][0-9]) ICON=""
-  ;;
-  [3-5][0-9]) ICON=""
-  ;;
-  [1-2][0-9]) ICON=""
-  ;;
-  *) ICON=""
-esac
+percentage=$(printf '%s\n' "$batt_info" | grep -Eo '[0-9]+%' | head -1 | cut -d% -f1)
+[ -n "$percentage" ] || exit 0
 
-if [[ "$CHARGING" != "" ]]; then
-  ICON=""
+color=0xff7bd88f
+if printf '%s\n' "$batt_info" | grep -q 'AC Power'; then
+  icon=""
+elif [ "$percentage" -gt 80 ]; then
+  icon=""
+elif [ "$percentage" -gt 60 ]; then
+  icon=""
+elif [ "$percentage" -gt 40 ]; then
+  icon=""
+elif [ "$percentage" -gt 20 ]; then
+  icon=""
+  color=0xfffd9353
+else
+  icon=""
+  color=0xfffc618d
 fi
 
-# The item invoking this script (name $NAME) will get its icon and label
-# updated with the current battery status
-sketchybar --set "$NAME" icon="$ICON" label="${PERCENTAGE}%"
+sketchybar --set "$NAME" icon="$icon" icon.color="$color" label="${percentage}%" label.color="$color"

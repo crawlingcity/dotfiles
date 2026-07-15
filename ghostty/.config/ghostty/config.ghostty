@@ -1,0 +1,53 @@
+# Ghostty configuration migrated from wezterm.lua (macOS settings).
+
+# Appearance
+font-family = JetBrains Mono
+font-family-bold = JetBrains Mono
+font-family-italic = JetBrains Mono
+font-family-bold-italic = JetBrains Mono
+font-style = Bold
+font-style-bold = Bold
+font-style-italic = Bold Italic
+font-style-bold-italic = Bold Italic
+font-size = 14
+window-decoration = auto
+macos-titlebar-style = tabs
+macos-window-buttons = hidden
+shell-integration-features = ssh-env
+copy-on-select = clipboard
+selection-word-chars = " \t'\"│`|:;,()[]{}<>$`=?"
+
+# Preserve the existing custom Nord-style palette.
+background = #20232c
+foreground = #d9dde7
+split-divider-color = #4d5568
+palette = 0=#3c4150
+palette = 1=#b2656b
+palette = 2=#a8bd90
+palette = 3=#e5cc93
+palette = 4=#87a0be
+palette = 5=#ae8fab
+palette = 6=#93becd
+palette = 7=#e5e8ef
+palette = 8=#4d5568
+palette = 9=#b2656b
+palette = 10=#a8bd90
+palette = 11=#e5cc93
+palette = 12=#87a0be
+palette = 13=#ae8fab
+palette = 14=#98baba
+palette = 15=#eceef3
+palette = 93=#aabbff
+palette = 129=#aabbff
+palette = 135=#aabbff
+
+# Keybindings carried over from WezTerm.
+keybind = super+shift+r=reload_config
+keybind = ctrl+tab=text:\x01n
+keybind = ctrl+shift+tab=text:\x01p
+keybind = super+arrow_left=text:\x1b[H
+keybind = super+arrow_right=text:\x1b[F
+keybind = super+ctrl+arrow_up=text:\x01\x1b[A
+keybind = super+ctrl+arrow_down=text:\x01\x1b[B
+keybind = super+ctrl+arrow_left=text:\x01\x1b[D
+keybind = super+ctrl+arrow_right=text:\x01\x1b[C
