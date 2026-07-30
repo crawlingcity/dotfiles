@@ -43,8 +43,8 @@ palette = 135=#aabbff
 
 # Keybindings carried over from WezTerm.
 keybind = super+shift+r=reload_config
-keybind = ctrl+tab=text:\x01n
-keybind = ctrl+shift+tab=text:\x01p
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
 keybind = super+arrow_left=text:\x1b[H
 keybind = super+arrow_right=text:\x1b[F
 keybind = super+ctrl+arrow_up=text:\x01\x1b[A
