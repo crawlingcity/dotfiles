@@ -4,3 +4,6 @@
 [submodule "private"]
 	branch = master
 	update = merge
+[submodule "nvim/.config/nvim"]
+	path = nvim/.config/nvim
+	url = https://github.com/LazyVim/starter.git

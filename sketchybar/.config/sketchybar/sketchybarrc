@@ -135,7 +135,7 @@ sketchybar --add graph cpu right 42 \
            icon="" \
            icon.color=0xff5ad4e6 \
            label.width=32 \
-           script="$HOME/Documents/tracker/plugins/cpu.sh" \
+           script="$PLUGIN_DIR/cpu.sh" \
            --subscribe cpu mouse.clicked
 
 # Rounded widget groups inspired by flameberry/Dotfiles.

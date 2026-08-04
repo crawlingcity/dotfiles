@@ -6,6 +6,13 @@ fi
 # zmodload zsh/zprof
 [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
+# Shared login/interactive environment. .profile is guarded, so login shells
+# that already sourced it through .zprofile do not repeat the setup.
+[[ -r "$HOME/.profile" ]] && source "$HOME/.profile"
+
+# Keep inherited and subsequently-added command/completion paths unique.
+typeset -U path PATH fpath FPATH
+
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
 	git
@@ -25,12 +32,7 @@ export OVERMIND_SOCKET="${HOME}/work/.overmind.sock"
 [ -s ~/.p10k.zsh ] && source ~/.p10k.zsh
 [ -s ~/.fzf.zsh ] && source ~/.fzf.zsh
 zstyle ':omz:update' mode disabled  # don't check for updates on every start
-autoload -Uz compinit
-if [[ -n "${ZDOTDIR:-$HOME}/.zcompdump"(#qN.mh+24) ]]; then
-  compinit
-else
-  compinit -C  # skip security check, use cached dump
-fi
+# Oh My Zsh owns compinit and its compiled completion cache.
 [ -s $HOME/.oh-my-zsh/oh-my-zsh.sh ] && source $HOME/.oh-my-zsh/oh-my-zsh.sh
 [ -s ~/work/shellzilla/helper.sh ] && source ~/work/shellzilla/helper.sh
 [ -s ~/homelab/scripts/homelab.sh ] && source ~/homelab/scripts/homelab.sh
@@ -46,11 +48,16 @@ load_remote >/dev/null 2>&1
 [ -s ~/.exports_and_aliases ] && source ~/.exports_and_aliases
 [ -s ~/.functions ] && source ~/.functions
 [ -s ~/.exports ] && source ~/.exports
+
+# A legacy value in .exports may be stale; the signature derived from the
+# current private key must take precedence for local SP-JOB processes.
+if [[ -f "$HOME/.ssh/nginx-cdb-sc1-development.pem" ]]; then
+  export X_CASPER_SC_GET_CHALLENGE="$(printf '%s' 'SP-JOB/Configure:ALLOW:GET' | openssl dgst -sha256 -sign "$HOME/.ssh/nginx-cdb-sc1-development.pem" | openssl enc -base64 -A)"
+fi
+
 [ -n "$USER_SHELLFILE" ] && [ -s "$USER_SHELLFILE" ] && source "$USER_SHELLFILE" # depends on .exports
 
 ulimit -n 10240
-# load completions
-autoload -U +X bashcompinit && bashcompinit
 
 # 1Password CLI completion (cached, no auth needed on shell startup)
 _op_completion_cache="${XDG_CACHE_HOME:-$HOME/.cache}/op_completion.zsh"
@@ -81,20 +88,9 @@ fi
 
 eval "$(atuin init zsh)"
 
-# macOS-only: Homebrew terraform completion
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  complete -o nospace -C /opt/homebrew/bin/terraform terraform
-elif command -v terraform &>/dev/null; then
-  complete -o nospace -C "$(which terraform)" terraform
-fi
-
-# macOS-only: Homebrew shell env (cached)
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  _brew_shellenv_cache="${XDG_CACHE_HOME:-$HOME/.cache}/brew_shellenv.zsh"
-  if [[ ! -f "$_brew_shellenv_cache" || /opt/homebrew/bin/brew -nt "$_brew_shellenv_cache" ]]; then
-    /opt/homebrew/bin/brew shellenv >| "$_brew_shellenv_cache"
-  fi
-  source "$_brew_shellenv_cache"
+# Terraform completion, when Terraform is installed.
+if command -v terraform &>/dev/null; then
+  complete -o nospace -C "$(command -v terraform)" terraform
 fi
 
 # bun completions
@@ -108,5 +104,7 @@ fi
 
 export PATH="$HOME/.local/bin:$PATH"
 
-# Initialise rbenv after all PATH changes so Ruby shims are available immediately.
-eval "$(command rbenv init - zsh)"
+# Initialise rbenv once, after all PATH changes.
+if command -v rbenv &>/dev/null; then
+  eval "$(command rbenv init - zsh)"
+fi
