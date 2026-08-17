@@ -8,8 +8,8 @@ CALCULATOR   = "gnome-calculator"
 
 -- Monitors
 -- Detected outputs: Gigabyte G34WQC (DisplayPort) and LG UltraFine (HDMI).
-MONITOR1 = "DP-2"
-MONITOR2 = "HDMI-A-2"
+MONITOR1 = "DP-1"
+MONITOR2 = "HDMI-A-1"
 MONITOR3 = ""
 PRIMARY_MONITOR = MONITOR1
 

@@ -2,6 +2,23 @@ local mainMod = "SUPER"
 local noctCall = "noctalia msg "
 local launchPrefix = "uwsm app -- " -- if you are not using UWSM, make this empty (e.g. "")
 
+-- Disable Alt-based compositor shortcuts while the focused window is a
+-- fullscreen game, allowing the game to receive those key combinations.
+local altBinds = {}
+local function altBind(keys, dispatcher, opts)
+    local bind = hl.bind(keys, dispatcher, opts)
+    table.insert(altBinds, bind)
+    return bind
+end
+
+local function updateAltBinds()
+    local window = hl.get_active_window()
+    local fullscreenGame = window
+        and window.content_type == "game"
+        and window.fullscreen ~= 0
+    for _, bind in ipairs(altBinds) do bind:set_enabled(not fullscreenGame) end
+end
+
 ---------------------------
 ---- WINDOW MANAGEMENT ----
 ---------------------------
@@ -9,7 +26,7 @@ local launchPrefix = "uwsm app -- " -- if you are not using UWSM, make this empt
 -- Window manipulation
 hl.bind(mainMod .. " + Escape",      hl.dsp.exec_cmd("hyprctl kill"))
 hl.bind(mainMod .. " + Q",           hl.dsp.window.close())
-hl.bind(mainMod .. " + ALT + Space", hl.dsp.window.float({ action = "toggle" }))
+altBind(mainMod .. " + ALT + Space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D",           hl.dsp.window.fullscreen({ mode = 1 }))
 hl.bind(mainMod .. " + F",           hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + J",           hl.dsp.layout("togglesplit"))
@@ -19,7 +36,7 @@ hl.bind(mainMod .. " + Left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + Right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + Up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + Down",  hl.dsp.focus({ direction = "down" }))
-hl.bind("ALT + Tab",           hl.dsp.window.cycle_next())
+altBind("ALT + Tab",           hl.dsp.window.cycle_next())
 hl.bind(mainMod .. " + Tab",   hl.dsp.exec_cmd(noctCall .. "window-switcher"))
 
 -- Move active window around workspaces & monitors
@@ -79,7 +96,7 @@ hl.bind(mainMod .. " + X",          hl.dsp.exec_cmd(noctCall .. "panel-toggle co
 hl.bind(mainMod .. " + Space",      hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"))
 hl.bind(mainMod .. " + period",     hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher /emo"))
 hl.bind(mainMod .. " + L",          hl.dsp.exec_cmd(noctCall .. "session lock"))
-hl.bind(mainMod .. " + ALT + C",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
+altBind(mainMod .. " + ALT + C",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
 
 ---------------------------
 ---- HARDWARE CONTROLS ----
@@ -126,8 +143,8 @@ hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(noctCall .. "panel-toggle control-cen
 -- AeroSpace-style workspace controls
 for i = 1, 6 do
     local workspace = i + 1 -- Workspace 1 is the gaming workspace.
-    hl.bind("ALT + " .. i,         hl.dsp.focus({ workspace = workspace }))
-    hl.bind("ALT + SHIFT + " .. i, hl.dsp.window.move({ workspace = workspace }))
+    altBind("ALT + " .. i,         hl.dsp.focus({ workspace = workspace }))
+    altBind("ALT + SHIFT + " .. i, hl.dsp.window.move({ workspace = workspace }))
 end
 
 -- Focus on monitors
@@ -139,7 +156,7 @@ hl.bind(mainMod .. " + 3", hl.dsp.focus({ monitor = MONITOR3 }))
 -- Absolute
 for i = 1, NUM_WPM do
     local key = i % 10
-    hl.bind(mainMod .. " + ALT + " .. key, hl.dsp.focus({ workspace = i + 1 }))
+    altBind(mainMod .. " + ALT + " .. key, hl.dsp.focus({ workspace = i + 1 }))
 end
 -- Relative
 for i = 1, NUM_WPM do
@@ -161,3 +178,8 @@ hl.bind(mainMod .. " + CONTROL + mouse_down", hl.dsp.focus({ workspace = "m+1" }
 -- Special workspace (scratchpad)
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special" }))
 hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special())
+
+hl.on("window.active", updateAltBinds)
+hl.on("window.fullscreen", updateAltBinds)
+hl.on("window.update_rules", updateAltBinds)
+updateAltBinds()

@@ -46,9 +46,15 @@ hl.window_rule({
 })
 
 -- Apps
+-- Visible workspace 1 = internal 2, workspace 3 = internal 4,
+-- and workspace 4 = internal 5 (workspace 1 internally is gaming).
+hl.window_rule({ match = { class = "^(zen)$" }, workspace = "5", tile = true })
+hl.window_rule({ match = { class = "^(vesktop|discord)$" }, workspace = "5", tile = true })
+hl.window_rule({ match = { class = "^(steam)$" }, workspace = "4" })
+hl.window_rule({ match = { class = "^(com\\.mitchellh\\.ghostty|ghostty)$" }, workspace = "2" })
+
 hl.window_rule({ match = { class = "^(.*\\.exe)$", float = true }, monitor = PRIMARY_MONITOR, center = true, fullscreen_state = 0 })
 hl.window_rule({ match = { class = "^(.*[Ll]auncher.*)$" }, float = true, monitor = PRIMARY_MONITOR })
-hl.window_rule({ match = { class = "^(vesktop|discord)$" }, monitor = PRIMARY_MONITOR })
 hl.window_rule({ match = { class = "^(.*[Cc]alc.*)$" }, float = true, size = { "max(monitor_w, monitor_h)*0.17", "min(monitor_w, monitor_h)*0.43" } })
 hl.window_rule({ match = { class = "^(org\\.kde\\.keditfiletype)$" }, float = true })
 hl.window_rule({ match = { class = "^(org\\.kde\\.ark)$" }, size = { "max(monitor_w, monitor_h)*0.40", "min(monitor_w, monitor_h)*0.40" } })
